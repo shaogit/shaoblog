@@ -1,0 +1,15 @@
+{% extends 'blogs/base.html' %}
+{% load bootstrap3 %}
+{% block header %}
+{% for image in images %}
+
+
+<img src="/media/{{ image.img }}">
+
+{% endfor %}
+<form class="form" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	<input type="file" name="img">
+	<button type="submit">upload</button>	
+</form>
+{% endblock header %}

@@ -1,0 +1,178 @@
+
+{% extends "blogs/base.html" %}
+{% load bootstrap3 %}
+{% block style %}
+	
+	<style>
+		.btn-tag{
+			margin: 5px;
+			border-radius: 18px;
+			color:#303030;
+			background-color: #fff;
+			border-color: #505050;
+		}
+		.btn-tag:hover
+		{
+			color: #ffffff;
+			background-color: #505050;
+		}
+		.btn-tag:active
+		{
+			color: #ffffff;
+			background-color: #fff;
+		}
+		.tags-header
+		{
+		  padding-top: 16px;
+		  padding-bottom: 16px;
+		  margin-top: 30px;
+		 
+		  border-radius: 6px 6px 0px 0px;
+		  text-align: center;
+		  color: inherit;
+		  background-color: #ddd;
+		}
+		.tags-body
+		{
+		  padding-top: 16px;
+		  padding-bottom: 16px;
+		  border: 1px solid #ddd;
+		  margin-bottom: 30px;
+		  border-radius: 0px 0px 6px 6px;
+		  text-align: center;	  
+		  color: inherit;
+		  background-color: #fefefe;
+		}
+		.shao{
+			margin-top: 20px;
+			margin-bottom: 20px;
+			padding: 6px;
+			border-radius: 13px;
+			color: inherit;
+			background-color: #ddd;
+			text-align: center;
+		}
+		.shao img{
+			padding: 30px;
+			border-radius: 50%;
+			max-width: 100%;
+			height: auto;
+		}
+		.shao a:link,.shao a:visited{
+			text-decoration: none;
+			color: inherit;
+			font-size: 36px;
+		}
+		.shao a:hover,.shao a:active{
+ 			color: #808080;
+		}
+
+	</style>
+
+{% endblock style %}
+{% block header %}
+<div class="row">
+	<div class="col-md-8">
+		<div class="text-center">
+			<h2>推荐文章</h2>
+		<br>
+		</div>
+		
+		{% for blog in rcmblogs %}
+			{% if blog.push_style == 'long' %}
+				<!--long -->
+				<div>
+					标签
+					{% for tag in blog.get_tags %}
+						<a href="{% url 'blogs:tag_blogs' tag.id %}">{{ tag }}</a>
+					{% endfor %}
+					&nbsp;
+					{{ blog.created_date|date:'Y/m/d' }}
+					<h3 class="media-heading">
+						<a style="color:#303030" href="{% url 'blogs:blog' blog.id %}">
+						{{ blog.title }}</a>
+					</h3>
+					<p></p>
+					<div>
+						<img class="img-responsive" src="/media/{{ blog.push_image }}">
+					</div>
+					<p></p>
+					{{ blog.preview }}
+					<a href="{% url 'blogs:blog' blog.id %}">阅读全文</a>
+				</div>
+				<!-- long -->
+			{% else %}
+				<!-- short-->
+				<div class="row">
+					<div class="col-md-4">
+						<img class="img-responsive" src="/media/{{ blog.push_image }}">
+					</div>
+					<div class="col-md-8">
+					标签
+					{% for tag in blog.get_tags %}
+						<a href="{% url 'blogs:tag_blogs' tag.id %}">{{ tag }}</a>
+					{% endfor %}
+					&nbsp;
+					{{ blog.created_date|date:'Y/m/d' }}
+					<h3 class="media-heading">
+						<a style="color:#303030" href="{% url 'blogs:blog' blog.id %}">
+					{{ blog.title }}</a>
+					</h3>
+					<p>
+						{{ blog.preview }}
+					</p>
+					
+					<a href="{% url 'blogs:blog' blog.id %}">阅读全文</a>
+					</div>
+				</div>
+				<!--short-->
+			{% endif %}
+		<hr>
+		{% endfor %}
+		<div class="text-center">
+			<a class="btn btn-primary btn-lg" href="{% url 'blogs:blogs' %}">查看更多</a>
+		</div>
+	</div>
+
+	<div class="col-md-3 col-md-offset-1 col-xs-8 col-xs-offset-2">
+		<div class="">
+			<div class="tags-header">
+				<h3 class="media-heading">标签</h3>
+			</div>
+			
+			<div class="tags-body">
+				{% for tag in tags %}
+				<a class="btn btn-tag" href="{% url 'blogs:tag_blogs' tag.id %}">{{ tag }}</a>
+				{% endfor %}
+			</div>	
+		</div>
+
+		<div class="">
+		<div class="panel panel-primary">
+		  <!-- Default panel contents -->
+		  <div class="panel-heading text-center">最新文章</div>
+		  <!-- List group -->
+	  <ul class="list-group">
+	  	{% for blog in blogs %}
+	    <li class="list-group-item"><a href="{% url 'blogs:blog' blog.id %}">{{ blog.title }}</a></li>
+	    {% endfor %}
+	  </ul>
+	</div>
+	</div>
+
+
+		<div class="">
+			
+		<div class="shao">
+			{% load static %}
+			<img src="{% static 'blogs/img/bg_.jpg' %}">
+			<a href="{% url 'blogs:shao' %}">Shao</a>		
+			<p></p>
+		</div>
+		</div>
+		
+
+	</div>
+</div>
+
+{% endblock header %}

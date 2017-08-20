@@ -1,0 +1,107 @@
+{% extends "blogs/base.html" %}
+{% load bootstrap3 %}
+{% block header %}
+<div class="page-header">
+	<div class="text-center">
+		<h1>{{ blog.title }}</h1>
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-xs-6">
+			标签：
+			{% for tag in tags %}
+				<a href="{% url 'blogs:tag_blogs' tag.id %}"><span class="label label-info">{{ tag }}</span></a>
+			{% endfor %}
+		</div>
+		<div class="col-md-6 col-xs-6 text-right">
+			评论:
+			<a><span class="badge">{{ com_count }}</span></a>&nbsp;
+		<!--	<h>点赞:{{ blog.up_count }}&nbsp;</h> -->
+			<h>阅读:{{ blog.visi_count }}&nbsp;</h>	
+		</div>
+	</div>
+</div>
+
+{% endblock header %}
+
+{% block content %}
+
+<p>{{ blog.content|safe }}</p>
+
+<div class="page-header">
+	<h>{{ blog.created_date }}</h>
+	<ul class="text-right">
+	<!--	<a class="btn btn-primary" href="{% url 'blogs:clicklike' blog.id %}"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;点赞</a>&nbsp;
+	-->
+		<a class="btn btn-primary" href=""><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>&nbsp;分享</a>
+	</ul>
+</div>
+<div class="jumbotron">
+	<form class="form" method="post">
+		{% csrf_token %}
+		<div class="form-group">
+			<label id="id_content"><p>评论({{ com_count }}):</p></label>
+			<textarea name="content" rows="8" class="form-control" 
+			placeholder="" title="" required id="id_content">
+			</textarea>		
+		</div>
+		<div class="form-inline text-right">
+			<div class="form-group">
+				<label class="control-label" for="id_author">用户名:</label>
+				<input type="text" name="author" maxlength="20" class="form-control" placeholder="name" title="" required id="id_author" />
+			</div>
+			<div class="form-group">
+				<label class="control-label" for="id_a">
+					<img class="img-responsive" src="/vericode/" id="vcimg" onclick="refresh_vericode(this)">
+				</label>
+				<input type="text" name="vericode" maxlength="20" class="form-control" placeholder="验证码" title="" required id="id_a" />
+			</div>
+			<button class="btn btn-primary" name='submit'>发表评论</button>
+		</div>			
+	</form>
+	<script>
+		function refresh_vericode(ths){
+			ths.src += '?';
+		}
+	</script>
+	{% if code_result == False %}
+	<br>
+	<div class="alert alert-danger alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong>评论</strong> 验证码错误.
+</div>
+	{% endif %}
+
+	<hr>
+
+<ul class="media-list">
+	{% for comment in comments %}
+  <li class="media">
+    <div class="media-left">
+      {% load static %}
+      <img class="media-object img-thumbnail" src="{% static "blogs/img/user.png" %}" alt="...">
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">{{ comment.author }} <small>{{ comment.created_time }}</small></h4>
+      {{ comment.content }}
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+
+</div>
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

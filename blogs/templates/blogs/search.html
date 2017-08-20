@@ -1,0 +1,49 @@
+{% extends "blogs/base.html" %}
+{% load bootstrap3 %}
+
+{% block header %}
+<div class="page-header">
+<h2>搜索结果&nbsp;<span class="badge">{{ blogs.paginator.count }}</span></h2>
+</div>
+
+{% endblock header %}
+{% block content %}
+
+<ul class="media-list">
+{% for blog in blogs %}
+  <li class="media">
+    <div class="media-body">
+      <h4 class="media-heading">
+    	  <a href="{% url 'blogs:blog' blog.id %}">{{ blog.title }}</a>
+      </h4>
+      {{ blog.created_date }}
+      <p>{{ blog.preview }}</p>
+    </div>
+  </li>
+ {% endfor %}
+</ul>
+
+</ul>
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    <li>
+      <a href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% for x in blogs.paginator.page_range %}
+      {% if x == blogs.number %}
+      <li class="active"><a href="?page={{ x }}&search={{ kw }}">{{ x }}<span class="sr-only"></span></a>
+      {% else %}
+      <li><a href="?page={{ x }}&search={{ kw }}">{{ x }}</a></li>
+      {% endif%}
+    {% endfor %}
+    <li>
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+{% endblock content %}

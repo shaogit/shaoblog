@@ -1,0 +1,112 @@
+{% extends 'blogs/base.html' %}
+{% load bootstrap3 %}
+
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="jumbotron">
+			<div class="container">
+				<div class="text-center">
+				{% load static %}
+				<img class="img-rounded" src="{% static 'blogs/img/bg_.jpg' %}">
+			</div>
+			<p>姓名:shao</p>
+			<p>性别:男</p>
+			<p></p>
+			<p></p>
+			</div>
+			
+		</div>
+	</div>
+	<div class="col-md-8">
+		<div class="jumbotron">
+			<div class="container">
+				<div class="progress">
+  				<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+    			C
+  				</div>
+				</div>
+				<div class="progress">
+  				<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+    			Python3
+  				</div>
+				</div>
+				<div class="progress">
+  				<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+    			Django
+  				</div>
+				</div>
+				<div class="progress">
+  				<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+    			Bootstrap3
+  				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% block header %}
+	<div class="jumbotron">
+	<h2 class="text-center">简历</h2>
+	<hr>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="text-center">
+					{% load static %}
+					<img class="img-responsive img-rounded" src="{% static 'blogs/img/bg_.jpg' %}">
+				</div>
+				<p></p>
+				<p>姓名：凌文韶</p>
+				<p>性别：男</p>
+				<p>生日：1994-1</p>
+				<p>籍贯：广东河源</p>
+				<p>电话：</p>
+				<p>住址：广东省东莞市大朗镇</p>
+				<p>E-Mail：shaopson@outlook.com</p>
+				<p>微信:</p>
+			</div>
+			<div class="col-md-7 col-md-offset-1">
+
+				<p>学历：大专</p>
+				<p>专业：物联网应用技术</p>
+				<p>毕业院校：南京信息职业技术学院</p>
+				<p>毕业时间：2017-6</p>
+				<p>工作经验：</p>
+				<p>技能:</p>
+				<div class="progress">
+  				<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+    			C
+  				</div>
+				</div>
+
+				<div class="progress">
+  				<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 45%;">
+    			Python3
+  				</div>
+				</div>
+
+				<div class="progress">
+  				<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 35%;">
+    			Django
+  				</div>
+				</div>
+
+				<div class="progress">
+  				<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 27%;">
+    			Linux
+  				</div>
+				</div>
+
+				<div class="progress">
+  				<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 17%;">
+    			Bootstrap3
+  				</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+
+{% endblock header%}
+
