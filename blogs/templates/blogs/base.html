@@ -5,23 +5,11 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Blog</title>
+	<title>Shaopson</title>
 	{% bootstrap_css %}
 	{% bootstrap_javascript %}
 	{% load static %}
-	<link href="{% static "blogs/bootstrap.min.css" %}" rel="stylesheet">
-	<style>
-	.footer
-	{
-		margin-top: 40px;
-		border-top: 1px solid #f0f0f0;
-		padding: 18px;
-		background-color: #303030;
-		color: #f0f0f0;
-		text-align: center;
-	}
-
-	</style>
+	<link href="{% static "blogs/shao.css" %}" rel="stylesheet">
 	{% block style %}
 	{% endblock style %}
 </head>
@@ -37,7 +25,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="{% url 'blogs:index' %}">ShaoBlog</a>
+			<a class="navbar-brand" href="{% url 'blogs:index' %}">SHAOPSON</a>
 		</div>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">

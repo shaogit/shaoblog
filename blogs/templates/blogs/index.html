@@ -2,73 +2,6 @@
 {% extends "blogs/base.html" %}
 {% load bootstrap3 %}
 {% block style %}
-	
-	<style>
-		.btn-tag{
-			margin: 5px;
-			border-radius: 18px;
-			color:#303030;
-			background-color: #fff;
-			border-color: #505050;
-		}
-		.btn-tag:hover
-		{
-			color: #ffffff;
-			background-color: #505050;
-		}
-		.btn-tag:active
-		{
-			color: #ffffff;
-			background-color: #fff;
-		}
-		.tags-header
-		{
-		  padding-top: 16px;
-		  padding-bottom: 16px;
-		  margin-top: 30px;
-		 
-		  border-radius: 6px 6px 0px 0px;
-		  text-align: center;
-		  color: inherit;
-		  background-color: #ddd;
-		}
-		.tags-body
-		{
-		  padding-top: 16px;
-		  padding-bottom: 16px;
-		  border: 1px solid #ddd;
-		  margin-bottom: 30px;
-		  border-radius: 0px 0px 6px 6px;
-		  text-align: center;	  
-		  color: inherit;
-		  background-color: #fefefe;
-		}
-		.shao{
-			margin-top: 20px;
-			margin-bottom: 20px;
-			padding: 6px;
-			border-radius: 13px;
-			color: inherit;
-			background-color: #ddd;
-			text-align: center;
-		}
-		.shao img{
-			padding: 30px;
-			border-radius: 50%;
-			max-width: 100%;
-			height: auto;
-		}
-		.shao a:link,.shao a:visited{
-			text-decoration: none;
-			color: inherit;
-			font-size: 36px;
-		}
-		.shao a:hover,.shao a:active{
- 			color: #808080;
-		}
-
-	</style>
-
 {% endblock style %}
 {% block header %}
 <div class="row">
@@ -165,7 +98,7 @@
 			
 		<div class="shao">
 			{% load static %}
-			<img src="{% static 'blogs/img/bg_.jpg' %}">
+			<img src="{% static 'blogs/img/shao.jpg' %}">
 			<a href="{% url 'blogs:shao' %}">Shao</a>		
 			<p></p>
 		</div>
