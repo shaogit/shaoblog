@@ -18,7 +18,8 @@ def randfontcolor():
 
 def vericode(length=4,width=160,height=40):
 	image = Image.new('RGB',(width,height),(255,255,255))
-	font = ImageFont.truetype('Arial.ttf',32)
+	#font = ImageFont.truetype('Arial.ttf',32)
+	font = ImageFont.truetype('DejaVuSerif.ttf',32)
 	draw = ImageDraw.Draw(image)
 	for x in range(width):
 		for y in range(height):
