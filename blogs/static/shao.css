@@ -64,3 +64,6 @@ background-color: #303030;
 color: #f0f0f0;
 text-align: center;
 }
+.content p{
+	font-size: 17px;
+}

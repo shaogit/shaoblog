@@ -1,79 +1,75 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
-from django.core.urlresolvers import reverse
-from blogs.models import Tag, Blog,Comment, Visitor, Image
+#from django.core.urlresolvers import reverse
+from django.urls import reverse
+from blogs.models import Tag, Blog,Comment, Visitor,PushBlog
 from .forms import CommentForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import markdown
+import markdown,json
 from io import BytesIO
 from . import vericode
 # Create your views here.
 
 def index(request):
-	blogs = Blog.objects.all()[:8]
+	blogs = Blog.objects.all().order_by('-created_time')[:8]
 	#recommend blogs
-	rcmblogs = Blog.objects.all()[:6]
+	push_blogs = PushBlog.objects.all()
 	tags = Tag.objects.all()
-	content = {'blogs':blogs,'rcmblogs':rcmblogs,'tags':tags}
+	content = {'blogs':blogs,'push_blogs':push_blogs,'tags':tags}
 	return render(request, 'blogs/index.html',content)
 
 def blogs(request):
-	bs = Blog.objects.filter(visiable='Y').order_by('-created_time')
-	paginator = Paginator(bs,5)
+	blogs = Blog.objects.filter(visiable='Y').order_by('-created_time')
+	paginator = Paginator(blogs,5)
 	page = request.GET.get('page')
 	try:
-		bs = paginator.page(page)
+		blogs = paginator.page(page)
 	except PageNotAnInteger:
-		bs = paginator.page(1)
+		blogs = paginator.page(1)
 	except EmptyPage:
-		bs = paginator.page(paginator.num_pages)	
-	content = {'blogs':bs}
+		blogs = paginator.page(paginator.num_pages)	
+	content = {'blogs':blogs}
 	return render(request,'blogs/blogs.html',content)
 
 def blog(request,blog_id):
+#	del request.session['visi_blogs']
 	blog = Blog.objects.get(id=blog_id)
-	commentform = CommentForm()
 	extensions = ['markdown.extensions.extra',
 		'markdown.extensions.codehilite',
         'markdown.extensions.toc',]
 	blog.content = markdown.markdown(blog.content,extensions)
 	tags = blog.tags.all()
-	remote_ip = request.META['REMOTE_ADDR']
-#	user_id = request.session.get('user_id',False)
-#	if not user_id:	
-#		request.session['user_id'] = remote_ip
 
-	visitors = blog.visitors.all().filter(ip=remote_ip)
-	if not visitors:
-		visitors = Visitor.objects.all().filter(ip=remote_ip)
-		if visitors:
-			visitor = visitors[0]
-		#	visitor.add_blog(blog)
-		else:
-			visitor = Visitor(ip=remote_ip)
-			visitor.save()
-		blog.add_visitor(visitor)	
+#	remote_ip = request.META['REMOTE_ADDR']
+
+	visi_blogs = request.session.get(blog_id,False)
+	if not visi_blogs:
+		request.session[blog_id] = True
+		blog.visi_count += 1
+		blog.save()
 	
 	code_result = ''
 	if request.method == 'POST':
-		commentform = CommentForm(request.POST)
+		comment_form = CommentForm(request.POST)
 		vericode = request.POST.get('vericode').upper()
 		code = request.session.get('vericode').upper()
 		if vericode == code:
-			if commentform.is_valid():
-				new_comment = commentform.save(commit=False)
+			if comment_form.is_valid():
+				new_comment = comment_form.save(commit=False)
 				new_comment.blog = blog
 				new_comment.save()
+				return HttpResponseRedirect(reverse('blogs:blog',args=(blog_id)))
 		else:
 			code_result = False
 
-	comments = blog.comments.all().order_by('created_time')
-	com_count = len(comments)
+	comments = blog.comment_set.all().order_by('created_time')
+	comment_form = CommentForm()
 	content = {
-		'blog':blog,'tags':tags,'comments':comments,'com_count':com_count,
-		'commentform':commentform,'code_result':code_result,
+		'blog':blog,'tags':tags,'comments':comments,
+		'comment_form':comment_form,'code_result':code_result,
 	}
 	return render(request,'blogs/blog.html',content)
+
 
 def tag_blogs(request,tag_id):
 	tag = Tag.objects.get(id=tag_id)
@@ -137,11 +133,33 @@ def verificode(request):
 	return HttpResponse(f.getvalue())
 
 def clicklike(request,blog_id):
-	if request.session.get('like',False):
+	like_flag = blog_id + 'like'
+	if not request.session.get(like_flag):
 		blog = Blog.objects.get(id = blog_id)
-		blog.like()
-		request.session['like'] = True
+		blog.up()
+		request.session[like_flag] = True
+		return HttpResponse(blog.up_count)
+	else:
+		return HttpResponse('error')
 
+def comment(request):
+	code_result = False
+	if request.method == 'POST':
+		code_rec = request.POST.get('vericode').upper()
+		code_send = request.session.get('vericode').upper()
+		if code_rec == code_send:
+			blog_id = request.POST.get('blogid')
+			blog = Blog.objects.get(blog_id)
+			commentform = CommentForm(request.POST)
+			if commentform.is_valid():
+				new_comment = commentform.save(commit=False)
+				new_comment.blog = blog
+				new_comment.save()
+				code_result = True
 
-#update_fields=['views']
+	return HttpResponse(code_result)
+		
+
+   # return HttpResponseRedirect(reverse('blogs:blog', args=(question.id,)))
+
 

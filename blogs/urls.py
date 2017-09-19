@@ -11,4 +11,5 @@ urlpatterns=[
 	url(r'^images/$',views.image,name='image'),
 	url(r'^vericode/$',views.verificode,name='verificode'),
 	url(r'^clicklike/(?P<blog_id>\d+)/$',views.clicklike,name='clicklike'),
+	url(r'^comment/(?P<blog_id>\d+)/$',views.comment,name='comment'),
 ]

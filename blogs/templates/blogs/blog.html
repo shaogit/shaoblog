@@ -14,8 +14,8 @@
 		</div>
 		<div class="col-md-6 col-xs-6 text-right">
 			评论:
-			<a><span class="badge">{{ com_count }}</span></a>&nbsp;
-		<!--	<h>点赞:{{ blog.up_count }}&nbsp;</h> -->
+			<a><span class="badge">{{ blog.comm_count }}</span></a>&nbsp;
+			<h id="like-count">点赞:{{ blog.up_count }}&nbsp;</h>
 			<h>阅读:{{ blog.visi_count }}&nbsp;</h>	
 		</div>
 	</div>
@@ -24,22 +24,37 @@
 {% endblock header %}
 
 {% block content %}
+<div class="content">
+	<p>{{ blog.content|safe }}</p>
+</div>
 
-<p>{{ blog.content|safe }}</p>
 
 <div class="page-header">
 	<h>{{ blog.created_date }}</h>
 	<ul class="text-right">
-	<!--	<a class="btn btn-primary" href="{% url 'blogs:clicklike' blog.id %}"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;点赞</a>&nbsp;
-	-->
-		<a class="btn btn-primary" href=""><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>&nbsp;分享</a>
+		<a id="like-button" blogid="{{ blog.id }}" class="btn btn-primary" ><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;点赞</a>&nbsp;
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>&nbsp;分享</button>
 	</ul>
+	<script>
+		$("#like-button").click(function(){
+			blogid = $(this).attr("blogid");
+			$.get("/clicklike/" + blogid + "/",function(data,status){
+				if(data == 'error'){
+					
+				}
+				else{
+					$("#like-count").html("点赞:" + data + "&nbsp;");
+				}
+				$("#like-button").attr("class","btn btn-default");
+			});
+		});
+	</script>
 </div>
 <div class="jumbotron">
 	<form class="form" method="post">
 		{% csrf_token %}
 		<div class="form-group">
-			<label id="id_content"><p>评论({{ com_count }}):</p></label>
+			<label id="id_content"><p>评论({{ blog.comm_count }}):</p></label>
 			<textarea name="content" rows="8" class="form-control" 
 			placeholder="" title="" required id="id_content">
 			</textarea>		
@@ -81,14 +96,32 @@
       <img class="media-object img-thumbnail" src="{% static 'user.png' %}" alt="...">
     </div>
     <div class="media-body">
-      <h4 class="media-heading">{{ comment.author }} <small>{{ comment.created_time }}</small></h4>
+      <h4 class="media-heading">#{{ forloop.counter }}&nbsp;{{ comment.author }} <small>{{ comment.created_time }}</small></h4>
       {{ comment.content }}
     </div>
   </li>
   {% endfor %}
 </ul>
-
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">分享</h4>
+      </div>
+      <div class="modal-body">
+        <a href="">http://shaopson.com{% url "blogs:blog" blog.id %}</a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock content %}
 
 
