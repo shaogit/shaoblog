@@ -10,6 +10,7 @@
 	{% bootstrap_javascript %}
 	{% load static %}
 	<link href="{% static 'shao.css' %}" rel="stylesheet">
+	<link rel="shortcut icon" href="/media/favicon.ico" />
 	{% block style %}
 	{% endblock style %}
 </head>
@@ -60,10 +61,13 @@
 
 <footer class="footer">
 	<div class="row">
-		<div class="col-md-6 col-xs-6 text-left">
+		<div class="col-md-4 col-xs-6 text-left">
 			<a href="{% url 'blogs:shao' %}">关于 Shao</a>
-		</div>	
-		<div class="col-md-6 col-xs-6 text-right">
+		</div>
+		<div class="col-md-4 text-center">
+			<a href="http://www.miibeian.gov.cn/">粤ICP备17124600号</a> 
+		</div>
+		<div class="col-md-4 col-xs-6 text-right">
 			<a href="mailto:shaopson@outlook.com">shaopson@outlook.com</a>
 		</div>	
 	</div>
