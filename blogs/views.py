@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect,HttpResponse
 #from django.core.urlresolvers import reverse
 from django.urls import reverse
-from blogs.models import Tag, Blog,Comment, Visitor,PushBlog
+from blogs.models import Tag, Blog,Comment, Visitor,PushBlog,FavoriteSite
 from .forms import CommentForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import markdown,json
@@ -14,8 +14,9 @@ def index(request):
 	blogs = Blog.objects.all().order_by('-created_time')[:8]
 	#recommend blogs
 	push_blogs = PushBlog.objects.all()
+	sites = FavoriteSite.objects.all()
 	tags = Tag.objects.all()
-	content = {'blogs':blogs,'push_blogs':push_blogs,'tags':tags}
+	content = {'blogs':blogs,'push_blogs':push_blogs,'tags':tags,'sites':sites}
 	return render(request, 'blogs/index.html',content)
 
 def blogs(request):

@@ -96,8 +96,12 @@ class PushBlog(models.Model):
 	def __str__(self):
 		return str(self.number) + ":" + self.blog.title
 
+class FavoriteSite(models.Model):
+	name = models.CharField(max_length=100)
+	link = models.CharField(max_length=200)
 
-
+	def __str__(self):
+		return self.name
 
 
 
