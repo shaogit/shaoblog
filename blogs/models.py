@@ -58,17 +58,16 @@ class Blog(models.Model):
 	excerpt = models.CharField(verbose_name='摘要',max_length=240,blank=True)
 	#内容
 	content = models.TextField(verbose_name='内容')
-	#标签 # /
+	#标签 #
 	tags = models.ManyToManyField(Tag,verbose_name='标签',blank=True,related_name='blog')
-#	tags = models.CharField('标签',max_length=100)
 	#编写日期 
-	created_date = models.DateField(auto_now=True)
+	created_date = models.DateField(auto_now_add=True)
 	#编写时间
-	created_time = models.TimeField(auto_now=True)
+#	created_time = models.TimeField(auto_now=True)
 	#对外可见 Y：可见 N：不可见
 	CHOICES = (('Y','Yes'),('N','No'))
 	visiable = models.CharField(verbose_name='对外可见',max_length=2,choices=CHOICES,default='Y')
-	#浏览数	# -
+	#浏览数
 	visi_count = models.PositiveIntegerField(verbose_name='浏览数',default=0)
 	#点赞数 
 	up_count = models.PositiveIntegerField(verbose_name='点赞数',default=0)

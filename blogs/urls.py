@@ -7,8 +7,7 @@ urlpatterns=[
 	url(r'^blog/(?P<blog_id>\d+)/$', views.blog, name='blog'),
 	url(r'^blogs/(?P<tag_id>\d+)/$',views.tag_blogs,name='tag_blogs'),
 	url(r'^search/',views.search,name='search'),
-	url(r'^images/$',views.image,name='image'),
 	url(r'^vericode/$',views.verificode,name='verificode'),
 	url(r'^clicklike/(?P<blog_id>\d+)/$',views.clicklike,name='clicklike'),
-	url(r'^comment/(?P<blog_id>\d+)/$',views.comment,name='comment'),
+	url(r'^comment/$',views.comment,name='comment'),
 ]

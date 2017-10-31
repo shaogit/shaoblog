@@ -9,7 +9,10 @@
 	{% bootstrap_css %}
 	{% bootstrap_javascript %}
 	{% load static %}
+	<script src="{% static 'jquery.growl.js' %}" ></script>
+	<script src="{% static 'smoothscroll.js' %}"></script>
 	<link href="{% static 'shao.css' %}" rel="stylesheet">
+	<link href="{% static 'jquery.growl.css' %}" rel="stylesheet">
 	<link rel="shortcut icon" href="/media/favicon.ico" />
 	{% block style %}
 	{% endblock style %}
@@ -58,17 +61,16 @@
 	{% block content %}
 	{% endblock content %}
 </div>
-
 <footer class="footer">
 	<div class="row">
-		<div class="col-md-6 text-right">
+		<div class="col-xs-6 text-right">
 			<br>
 			<a href="">本网站是我为学习web开发而建的</a></br>
 			<a href="#">关于 Shao</a></br>
 			<a href="mailto:shaopson@outlook.com">shaopson@outlook.com</a></br>
 			<a href="http://www.miibeian.gov.cn/">粤ICP备17124600号</a> 
 		</div>
-		<div class="col-md-6 text-left">
+		<div class="col-xs-6 text-left">
 			<img class="footer-img" src="/media/rcode.png">
 		</div>
 	</div>

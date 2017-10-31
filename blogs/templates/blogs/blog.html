@@ -25,7 +25,7 @@
 
 {% block content %}
 <div class="content">
-	<p>{{ blog.content|safe }}</p>
+	<p>{{ blog.content_markdown|safe }}</p>
 </div>
 
 
@@ -35,42 +35,64 @@
 		<a id="like-button" blogid="{{ blog.id }}" class="btn btn-primary" ><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;点赞</a>&nbsp;
 		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>&nbsp;分享</button>
 	</ul>
+
+	<nav aria-label="...">
+	  <ul class="pager">
+	  	{% if pro_blog %}
+	    <li><a href="{% url 'blogs:blog' pro_blog.id %}"><span class="glyphicon glyphicon-chevron-left"></span>Previous: {{ pro_blog.title }}</a></li>
+	    {% else %}
+	    <li class="disabled"><a><span class="glyphicon glyphicon-chevron-left"></span>Previous: 没有了</a></li>
+	    {% endif %}
+	    {% if next_blog %}
+	    <li><a href="{% url 'blogs:blog' next_blog.id %}">Next: {{ next_blog.title }}<span class="glyphicon glyphicon-chevron-right"></span></a></li>
+	    {% else %}
+	    <li class="disabled"><a>Next: 没有了<span class="glyphicon glyphicon-chevron-right"></span></a></li>
+	    {% endif %}
+	  </ul>
+	</nav>
+
 	<script>
 		$("#like-button").click(function(){
 			blogid = $(this).attr("blogid");
 			$.get("/clicklike/" + blogid + "/",function(data,status){
 				if(data == 'error'){
-					
+					$.growl.warning({title:"不能重复点赞",message:""});
+					//$.growl.notice({title:"不能重复点赞",message:""});
+					//window.scroll({ top: 2500, left: 0, behavior: 'smooth' });
+					//document.querySelector('.scrollflag').scrollIntoView({ behavior: 'smooth' });
 				}
 				else{
 					$("#like-count").html("点赞:" + data + "&nbsp;");
 				}
-				$("#like-button").attr("class","btn btn-default");
+				$("#like-button").attr("class","btn btn-default disabled");
 			});
 		});
 	</script>
 </div>
+
+
 <div class="jumbotron">
-	<form class="form" method="post">
+	<form action="{% url 'blogs:comment' %}" class="form" method="post" id="comment-form">
 		{% csrf_token %}
+		<input type='hidden' name='blogid' value='{{blog.id}}' />
 		<div class="form-group">
 			<label id="id_content"><p>评论({{ blog.comm_count }}):</p></label>
 			<textarea name="content" rows="8" class="form-control" 
-			placeholder="" title="" required id="id_content">
+			placeholder="" title="" required id="content">
 			</textarea>		
 		</div>
 		<div class="form-inline text-right">
 			<div class="form-group">
 				<label class="control-label" for="id_author">用户名:</label>
-				<input type="text" name="author" maxlength="20" class="form-control" placeholder="name" title="" required id="id_author" />
+				<input type="text" name="author" maxlength="20" class="form-control" placeholder="name" title="" required id="author" />
 			</div>
 			<div class="form-group">
 				<label class="control-label" for="id_a">
 					<img class="img-responsive" src="/vericode/" id="vcimg" onclick="refresh_vericode(this)">
 				</label>
-				<input type="text" name="vericode" maxlength="20" class="form-control" placeholder="验证码" title="" required id="id_a" />
+				<input type="text" name="vericode" maxlength="20" class="form-control" placeholder="验证码" title="" required id="vericode" />
 			</div>
-			<button class="btn btn-primary" name='submit'>发表评论</button>
+			<button id="comment-submit" class="btn btn-primary" name="submit">发表评论</button>
 		</div>			
 	</form>
 	<script>
@@ -78,6 +100,34 @@
 			ths.src += '?';
 		}
 	</script>
+	<!--script>
+		$(document).ready(function(){
+			$("#comment-form").submit(function(){
+				var _content = $("#content").val();
+				var _author = $("#author").val();
+				var _vericode = $("#vericode").val();
+				var _blogid = $(this).attr("blogid");
+				alert(_content+_author+_vericode+_blogid);
+				$.ajax({
+					type:"post",
+					dateType:"json",
+					url:"/comment/",
+					data:{
+						'csrfmiddlewaretoken':"{{ csrf_token }}",
+						'blogid':"{{ blog.id }}",
+						'content':_content,
+						'author':_author,
+						'vericode':_vericode,
+					},
+					success:function(data){
+						if(data == 'ok'){
+						}
+					}
+				});
+				return false;
+			});
+		});
+	</script-->
 	{% if code_result == False %}
 	<br>
 	<div class="alert alert-danger alert-dismissible" role="alert">
@@ -103,7 +153,17 @@
   {% endfor %}
 </ul>
 </div>
-
+<p class="scrollflag"></p>
+<div class="text-center">
+	<button id="top-button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-up">&nbsp;Top</span></button>	
+</div>
+<script>
+	$(document).ready(function(){
+		$("#top-button").click(function(){
+			window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+		});
+	});
+</script>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
