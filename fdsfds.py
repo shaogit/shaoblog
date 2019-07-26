@@ -69,6 +69,7 @@ class UserVote(models.Model):
     comment = models.ForeignKey(Comment,on_delete=models.CASCADE,null=True,blank=True)
     date_created  = models.DateTimeField(auto_now_add=True)
 
+        
 
 class UserCollection(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
