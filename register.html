@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<form action="/registe" method="post">
+    	{% csrf_token %}
+	  <div class="form-group">
+	    <label for="username">Username</label>
+	    <input id="username" name="username" class="form-control" aria-describedby="usernameHelp" placeholder="Enter username" required>
+	    <small id="usernameHelp" class="form-text text-muted"></small>
+	  </div>
+	  <div class="form-group">
+	    <label for="email">E-mail</label>
+	    <input id="email" name="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter E-mail" required>
+	    <small id="emailHelp" class="form-text text-muted"></small>
+	  </div>
+	  <div class="form-group">
+	    <label for="password">Password</label>
+	    <input type="password" name="password" class="form-control" placeholder="Password" required>
+	  </div>
+	  <button type="submit" class="btn btn-primary">Registe</button>
+	</form>
+    {% for error in errors %}
+    {{ error }}
+    {% endfor %}
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+$("#username").change(function(){check(this)})
+$("#email").change(function(){check(this)})
+function check(dom){
+	var help_dom = $("#"+dom.name+"Help");
+	$.ajax({
+		url:"/registe/check",
+		data:{
+			"csrfmiddlewaretoken":"{{ csrf_token }}",
+			"key":dom.name,
+			"value":dom.value
+		},
+		type:"post",
+		success:function(result,status,xhr){
+			help_dom.html('<img src="https://github.githubassets.com/images/modules/ajax/success.png">');
+		},
+		error:function(xhr,status,error){
+			if(xhr.status == 422){
+				var content = xhr.responseText;
+				help_dom.html(content);
+			}
+		}
+	})
+}
+</script>
+</body>
+</html>
